@@ -52,12 +52,12 @@ GET
 
 
 
-### Consultar cardápio da semana
+### Consultar horário de funcionamento
 
 #### Endpoint
 
 ```
-/week-menu
+/schedules
 ```
 
 #### Método
