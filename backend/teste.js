@@ -70,32 +70,110 @@ function createSingleMenuJSON($, singleMenuStartElement) {
 
 function createWeekMenuJSON($) {
     const menuElement =  findWeekMenuStart($)
-    const weekdaysNames = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
-    const menusTypes = ['almoço', 'jantar']
-    const weekMenuJSON = {
-        'menus': []
+    const weekdays = [
+        {
+            name: 'domingo',
+            abbreviation: 'dom'
+        },
+        {
+            name: 'segunda-feira',
+            abbreviation: 'seg'
+        },
+        {
+            name: 'terça-feira',
+            abbreviation: 'ter'
+        },
+        {
+            name: 'quarta-feira',
+            abbreviation: 'qua'
+        },
+        {
+            name: 'quinta-feira',
+            abbreviation: 'qui'
+        },
+        {
+            name: 'sexta-feira',
+            abbreviation: 'sex'
+        },
+        {
+            name: 'sábado',
+            abbreviation: 'sáb'
+        },
+    ]
+    const menuTypes = {
+        lunch: 'almoço',
+        dinner: 'jantar'
     }
 
-    for (let weekdayName of weekdaysNames) {
-        const currentDayMenu = {}
+    const currentDate = new Date()
+    const weekMenuJSON = {
+        last_update: {
+            date: `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`,
+            time: `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`
+        },
+        info_from: 'https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario',
+        info_type: 'automatic',
+        menus_inteval: null,
+        menus: []
+    }
+
+    for (let weekday of weekdays) {
+        const weekdayName = weekday.name
+        const currentDayMenu = {
+            weekday_name: weekdayName,
+            weekday_abbreviation: weekday.abbreviation,
+            date: null, 
+            lunch: null,
+            dinner: null
+        }
         const weekdayStartElement = findWeekdayStartElement($, menuElement, weekdayName)
         if (!weekdayStartElement) {
             console.log(`Não foi encontrado o elemento do dia ${weekdayName}`)
+            weekMenuJSON['menus'].push(currentDayMenu)
             continue
         }
+        currentDayMenu['date'] = $(weekdayStartElement).text().match(/\d{2}\/\d{2}/)[0]
 
         let currentElement = $(weekdayStartElement)
         while (currentElement.get(0).tagName !== 'hr' && currentElement.next().length > 0) {
-            console.log($(currentElement).text())
-            for (let menuType of menusTypes) {
-                if ($(currentElement).text().toLowerCase().includes(menuType)) {
-                    currentDayMenu[menuType] = createSingleMenuJSON($, currentElement)
+            for (let menuKey in menuTypes) {
+                if ($(currentElement).text().toLowerCase().includes(menuTypes[menuKey])) {
+                    currentDayMenu[menuKey] = createSingleMenuJSON($, currentElement)
                 }
             }
             currentElement = $(currentElement).next()
         }
 
         weekMenuJSON['menus'].push(currentDayMenu)
+    }
+
+    // Nem todos os dias possuem um cardápio, e ficam sem data, vamos preencher utilizando as datas posteriores/anteriores
+    for (let i = 0; i < weekMenuJSON['menus'].length; i++) {
+        if (!weekMenuJSON['menus'][i]['date']) {
+            let j = i + 1
+            while (j != i) {
+                if (j >= weekMenuJSON['menus'].length) {
+                    j = 0
+                }
+                if (weekMenuJSON['menus'][j]['date']) {
+                    const date = new Date()
+                    date.setMonth(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[1]) - 1)
+                    if (i < j) {
+                        date.setDate(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[0]) - (j - i))
+                    } else {
+                        date.setDate(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[0]) + (i - j))
+                    }
+                    weekMenuJSON['menus'][i]['date'] = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`
+                    break
+                }
+                j++
+            }
+        }
+    }
+
+    weekMenuJSON['menus_inteval'] = {
+        start_date: weekMenuJSON['menus'][0]['date'],
+        end_date: weekMenuJSON['menus'][weekMenuJSON['menus'].length - 1]['date']
     }
 
     return weekMenuJSON
