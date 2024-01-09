@@ -19,14 +19,11 @@ import * as cheerio from 'cheerio';
 const ruHtml = await getRuInfo()
 const $ = cheerio.load(ruHtml)
 
-function findMenuStartElement($) {
+function findWeekMenuStart($) {
     return $('strong').filter((i, elem) => {
         return $(elem).text().toLowerCase() === 'cardápio'
     }).parent()
 }
-
-const menuElement =  findMenuStartElement($)
-console.log($(menuElement).text())
 
 function findWeekdayStartElement($, menuStartElement, weekdayName) {
     let currentElement = $(menuStartElement).next()
@@ -38,12 +35,71 @@ function findWeekdayStartElement($, menuStartElement, weekdayName) {
     }
 }
 
-const weekdaysNames = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
-for (let weekdayName of weekdaysNames) {
-    const weekdayStartElement = findWeekdayStartElement($, menuElement, weekdayName)
-    if (!weekdayStartElement) {
-        console.log(`Não foi encontrado o elemento do dia ${weekdayName}`)
-        continue
+function createSingleMenuJSON($, singleMenuStartElement) {
+    const menuJSON = {}
+    const menuItensDict = {
+        main_dish_unrestricted: 'prato principal – sem restrição', 
+        main_dish_vegetarian: 'prato principal – vegetariano',
+        garnishes: 'guarnição',
+        accompaniment: 'acompanhamentos',
+        salad: 'salada',
+        dessert: 'sobremesa'
     }
-    console.log(weekdayStartElement.text())
+    let currentElement = $(singleMenuStartElement).next()
+
+    while (currentElement.next().length > 0) {
+        let found = false
+        for (let itemKey in menuItensDict) {
+            const menuItemRegex = new RegExp(`${menuItensDict[itemKey]}: (.*)`, 'i')
+            const match = $(currentElement).text().match(menuItemRegex)
+            if (match) {
+                menuJSON[itemKey] = match[1]
+                found = true
+                break
+            }
+        }
+
+        if (!found) {
+            break
+        }
+
+        currentElement = $(currentElement).next()
+    }
+    return menuJSON
 }
+
+function createWeekMenuJSON($) {
+    const menuElement =  findWeekMenuStart($)
+    const weekdaysNames = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
+    const menusTypes = ['almoço', 'jantar']
+    const weekMenuJSON = {
+        'menus': []
+    }
+
+    for (let weekdayName of weekdaysNames) {
+        const currentDayMenu = {}
+        const weekdayStartElement = findWeekdayStartElement($, menuElement, weekdayName)
+        if (!weekdayStartElement) {
+            console.log(`Não foi encontrado o elemento do dia ${weekdayName}`)
+            continue
+        }
+
+        let currentElement = $(weekdayStartElement)
+        while (currentElement.get(0).tagName !== 'hr' && currentElement.next().length > 0) {
+            console.log($(currentElement).text())
+            for (let menuType of menusTypes) {
+                if ($(currentElement).text().toLowerCase().includes(menuType)) {
+                    currentDayMenu[menuType] = createSingleMenuJSON($, currentElement)
+                }
+            }
+            currentElement = $(currentElement).next()
+        }
+
+        weekMenuJSON['menus'].push(currentDayMenu)
+    }
+
+    return weekMenuJSON
+}
+
+
+console.log(JSON.stringify(createWeekMenuJSON($), null, 4))

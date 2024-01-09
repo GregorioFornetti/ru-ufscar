@@ -51,6 +51,7 @@ Retorna um JSON no seguinte formato:
         main_dish_unrestricted: "string",  // Prato principal sem restrições
         main_dish_vegetarian: "string",  // Prato principal vegetariano
         garnishes: "string",  // Guarnições
+        accompaniment: "string",  // Acompanhamentos
         salad: "string",  // Saladas
         dessert: "string"  // Sobremesas
       },
