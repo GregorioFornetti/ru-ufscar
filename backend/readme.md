@@ -67,6 +67,143 @@ Retorna um JSON no seguinte formato:
 }
 ```
 
+Exemplo de resposta:
+
+```javascript
+{
+   "last_update":{
+      "date":"09/01/2024",
+      "time":"16:20"
+   },
+   "info_from":"https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
+   "info_type":"automatic",
+   "menus_inteval":{
+      "start_date":"07/01",
+      "end_date":"13/01"
+   },
+   "menus":[
+      {
+         "weekday_name":"domingo",
+         "weekday_abbreviation":"dom",
+         "date":"07/01",
+         "lunch":null,
+         "dinner":null
+      },
+      {
+         "weekday_name":"segunda-feira",
+         "weekday_abbreviation":"seg",
+         "date":"08/01",
+         "lunch":{
+            "main_dish_unrestricted":"Iscas de frango à chinesa e ovo frito à parmegiana",
+            "main_dish_vegetarian":"Bolinho de feijão preto e ovo frito à parmegiana",
+            "garnishes":"Repolho refogado",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         },
+         "dinner":{
+            "main_dish_unrestricted":"Strogonoff de frango e ovo frito à brasileira",
+            "main_dish_vegetarian":"Strogonoff de pts e ovo frito à brasileira",
+            "garnishes":"Batata palha",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         }
+      },
+      {
+         "weekday_name":"terça-feira",
+         "weekday_abbreviation":"ter",
+         "date":"09/01",
+         "lunch":{
+            "main_dish_unrestricted":"Carne louca e cubos de frango com legumes",
+            "main_dish_vegetarian":"Berinjela recheada com pts e mix de grãos com legumes",
+            "garnishes":"Polenta",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         },
+         "dinner":{
+            "main_dish_unrestricted":"Iscas bovinas e frango desfiado",
+            "main_dish_vegetarian":"Almondega de ervilha e charuto de repolho com pts",
+            "garnishes":"Polenta",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         }
+      },
+      {
+         "weekday_name":"quarta-feira",
+         "weekday_abbreviation":"qua",
+         "date":"10/01",
+         "lunch":{
+            "main_dish_unrestricted":"Pernil suíno desfiado e carne assada",
+            "main_dish_vegetarian":"Feijão branco ao vinagrete e nuggets de grão de bico",
+            "garnishes":"Farofa",
+            "accompaniment":"Arroz branco e integral / feijão preto",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         },
+         "dinner":{
+            "main_dish_unrestricted":"Copa lombo ao molho limão e filé de frango grelhado",
+            "main_dish_vegetarian":"Batata recheada com pts e grão de bico xadrez",
+            "garnishes":"Farofa",
+            "accompaniment":"Arroz branco e integral / feijão preto",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         }
+      },
+      {
+         "weekday_name":"quinta-feira",
+         "weekday_abbreviation":"qui",
+         "date":"11/01",
+         "lunch":{
+            "main_dish_unrestricted":"Carne moída e frango assado",
+            "main_dish_vegetarian":"Assado de grão de bico com batatas e bolinho de mandioca com pts",
+            "garnishes":"Macarrão alho e óleo",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         },
+         "dinner":{
+            "main_dish_unrestricted":"Quibe de forno e frango ao sugo",
+            "main_dish_vegetarian":"Quibe veg e soja á primavera",
+            "garnishes":"Macarrão alho e óleo",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         }
+      },
+      {
+         "weekday_name":"sexta-feira",
+         "weekday_abbreviation":"sex",
+         "date":"12/01",
+         "lunch":{
+            "main_dish_unrestricted":"Filé de frango grelhado e torta madalena de carne",
+            "main_dish_vegetarian":"Bolinho de tofu e torta madalena veg",
+            "garnishes":"Seleta de legumes",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada",
+            "dessert":"Fruta ou doce"
+         },
+         "dinner":{
+            "main_dish_unrestricted":"Canjiquinha e iscas de frango ao molho vinagrete",
+            "main_dish_vegetarian":"Canjiquinha veg e feijão branco com brócolis",
+            "garnishes":"Seleta de legumes",
+            "accompaniment":"Arroz branco e integral / feijão",
+            "salad":"Dois tipos de salada"
+         }
+      },
+      {
+         "weekday_name":"sábado",
+         "weekday_abbreviation":"sáb",
+         "date":"13/01",
+         "lunch":null,
+         "dinner":null
+      }
+   ]
+}
+```
+
 
 
 ### Consultar preços

@@ -1,23 +1,6 @@
-import axios from 'axios'
 
-const ruInfoUrl = 'https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario'
+import { ruInfoUrl } from "./RU.js"
 
-
-async function getRuInfo() {
-    return axios.get(ruInfoUrl)
-    .then((response) => {
-        return response.data
-    })
-}
-
-// console.log(await getRuInfo())
-
-
-
-import * as cheerio from 'cheerio';
-
-const ruHtml = await getRuInfo()
-const $ = cheerio.load(ruHtml)
 
 function findWeekMenuStart($) {
     return $('strong').filter((i, elem) => {
@@ -53,7 +36,7 @@ function createSingleMenuJSON($, singleMenuStartElement) {
             const menuItemRegex = new RegExp(`${menuItensDict[itemKey]}: (.*)`, 'i')
             const match = $(currentElement).text().match(menuItemRegex)
             if (match) {
-                menuJSON[itemKey] = match[1]
+                menuJSON[itemKey] = match[1][0].toUpperCase() + match[1].toLowerCase().slice(1)
                 found = true
                 break
             }
@@ -68,7 +51,9 @@ function createSingleMenuJSON($, singleMenuStartElement) {
     return menuJSON
 }
 
-function createWeekMenuJSON($) {
+
+
+export default function getWeekMenu($) {
     const menuElement =  findWeekMenuStart($)
     const weekdays = [
         {
@@ -111,7 +96,7 @@ function createWeekMenuJSON($) {
             date: `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`,
             time: `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`
         },
-        info_from: 'https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario',
+        info_from: ruInfoUrl,
         info_type: 'automatic',
         menus_inteval: null,
         menus: []
@@ -128,7 +113,6 @@ function createWeekMenuJSON($) {
         }
         const weekdayStartElement = findWeekdayStartElement($, menuElement, weekdayName)
         if (!weekdayStartElement) {
-            console.log(`Não foi encontrado o elemento do dia ${weekdayName}`)
             weekMenuJSON['menus'].push(currentDayMenu)
             continue
         }
@@ -178,6 +162,3 @@ function createWeekMenuJSON($) {
 
     return weekMenuJSON
 }
-
-
-console.log(JSON.stringify(createWeekMenuJSON($), null, 4))

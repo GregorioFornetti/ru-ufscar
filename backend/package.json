@@ -5,13 +5,14 @@
   "description": "Todo o código do backend está nesta pasta. Toda lógica do servidor/API responsável por enviar informações para o app estão aqui.",
   "main": "teste.js",
   "scripts": {
-    "start": "node teste.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.5",
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2"
   }
 }
