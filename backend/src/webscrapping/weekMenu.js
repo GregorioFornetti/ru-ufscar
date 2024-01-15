@@ -55,6 +55,8 @@ function createSingleMenuJSON($, singleMenuStartElement) {
 
 export default function getWeekMenu($) {
     const menuElement =  findWeekMenuStart($)
+    const currDate = new Date()
+    const firstDayOfTheWeek = currDate.getDate() - currDate.getDay()
     const weekdays = [
         {
             name: 'domingo',
@@ -85,6 +87,9 @@ export default function getWeekMenu($) {
             abbreviation: 'sáb'
         },
     ]
+    for (let i = 0; i < weekdays.length; i++) {
+        weekdays[i]['date'] = `${(firstDayOfTheWeek + i).toString().padStart(2, '0')}/${(currDate.getMonth() + 1).toString().padStart(2, '0')}`
+    }
     const menuTypes = {
         lunch: 'almoço',
         dinner: 'jantar'
@@ -107,16 +112,15 @@ export default function getWeekMenu($) {
         const currentDayMenu = {
             weekday_name: weekdayName,
             weekday_abbreviation: weekday.abbreviation,
-            date: null, 
+            date: weekday.date, 
             lunch: null,
             dinner: null
         }
-        const weekdayStartElement = findWeekdayStartElement($, menuElement, weekdayName)
+        const weekdayStartElement = findWeekdayStartElement($, menuElement, `${weekday.date} - ${weekdayName}`)
         if (!weekdayStartElement) {
             weekMenuJSON['menus'].push(currentDayMenu)
             continue
         }
-        currentDayMenu['date'] = $(weekdayStartElement).text().match(/\d{2}\/\d{2}/)[0]
 
         let currentElement = $(weekdayStartElement)
         while (currentElement.get(0).tagName !== 'hr' && currentElement.next().length > 0) {
@@ -129,30 +133,6 @@ export default function getWeekMenu($) {
         }
 
         weekMenuJSON['menus'].push(currentDayMenu)
-    }
-
-    // Nem todos os dias possuem um cardápio, e ficam sem data, vamos preencher utilizando as datas posteriores/anteriores
-    for (let i = 0; i < weekMenuJSON['menus'].length; i++) {
-        if (!weekMenuJSON['menus'][i]['date']) {
-            let j = i + 1
-            while (j != i) {
-                if (j >= weekMenuJSON['menus'].length) {
-                    j = 0
-                }
-                if (weekMenuJSON['menus'][j]['date']) {
-                    const date = new Date()
-                    date.setMonth(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[1]) - 1)
-                    if (i < j) {
-                        date.setDate(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[0]) - (j - i))
-                    } else {
-                        date.setDate(parseInt(weekMenuJSON['menus'][j]['date'].split('/')[0]) + (i - j))
-                    }
-                    weekMenuJSON['menus'][i]['date'] = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`
-                    break
-                }
-                j++
-            }
-        }
     }
 
     weekMenuJSON['menus_inteval'] = {
