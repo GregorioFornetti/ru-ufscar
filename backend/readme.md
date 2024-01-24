@@ -6,7 +6,7 @@ A API está publica atualmente em: http://62.72.11.172:3000/
 
 ## Documentação da API
 
-A documentação pode ser acessada no Postman (COLOCAR LINK). Logo abaixo também há uma versão dessa documentação em Markdown:
+A documentação pode ser acessada no [Postman](https://documenter.getpostman.com/view/20890406/2s9YypDN42). Logo abaixo também há uma versão dessa documentação em Markdown:
 
 
 
@@ -320,7 +320,7 @@ Valores possíveis de `campus`:
 - `lagoa-do-sino` (Lagoa do Sino)
 - `araras` (Araras)
 
-Caso tenha sido fornecido um valor de `campus` incorreto (inexistente), será retornado uma mensagem de erro, com o status 404.
+**OBS:** Caso tenha sido fornecido um valor de `campus` incorreto (inexistente), será retornado uma mensagem de erro, com o status 404.
 
 #### Resposta
 
