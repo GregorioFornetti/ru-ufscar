@@ -1,3 +1,23 @@
+import { ruInfoUrl } from "./RU.js"
+
+export const campi = [
+    {
+        name: "São Carlos",
+        queryName: "sao-carlos"
+    },
+    {
+        name: "Sorocaba",
+        queryName: "sorocaba"
+    },
+    {
+        name: "Araras",
+        queryName: "araras"
+    },
+    {
+        name: "Lagoa do Sino",
+        queryName: "lagoa-do-sino"
+    }
+]
 
 const weekdays = [
     {
@@ -40,7 +60,7 @@ function findSchedulesStart($) {
 function findCampusStartElement($, campusName) {
     let currentElement = findSchedulesStart($).next()
     while (currentElement.next().length > 0) {
-        if (currentElement.text().toLowerCase().includes(campusName)) {
+        if (currentElement.text().toLowerCase().includes(campusName.toLowerCase())) {
             return currentElement
         }
         currentElement = $(currentElement).next()
@@ -50,10 +70,17 @@ function findCampusStartElement($, campusName) {
 function findWeekdayStartElement($, campusStartElement, weekdayName) {
     let currentElement = $(campusStartElement).next()
     while (currentElement.next().length > 0) {
-        const match = RegExp('(.*) à (.*)').match(currentElement.text().toLowerCase())
+        const weekdayRegex = new RegExp('(.*) à (.*)')
+        const match = $(currentElement).text().toLowerCase().match(weekdayRegex)
         if (match) {
-            const startWeekday = match[1]
-            const endWeekday = match[2]
+            let startWeekday = match[1]
+            if (!startWeekday.includes('-feira')) {
+                startWeekday += '-feira'
+            }
+            let endWeekday = match[2]
+            if (!endWeekday.includes('-feira')) {
+                endWeekday += '-feira'
+            }
             let started = false
             for (let weekday of weekdays) {
                 if (weekday.name === startWeekday) {
@@ -77,7 +104,7 @@ function findWeekdayStartElement($, campusStartElement, weekdayName) {
 }
 
 function createSingleWeekdayScheduleJSON($, singleWeekdayStartElement) {
-    const weekdayScheduleJSON = {}
+    const weekdayScheduleJSON = { lunch: null, dinner: null }
     const weekdayScheduleItensDict = {
         lunch: 'almoço',
         dinner: 'jantar'
@@ -89,7 +116,8 @@ function createSingleWeekdayScheduleJSON($, singleWeekdayStartElement) {
         let found = false
         for (let weekdayScheduleKey in weekdayScheduleItensDict) {
             if ($(currentElement).text().toLowerCase().includes(weekdayScheduleItensDict[weekdayScheduleKey])) {
-                const match = RegExp('(.*) às (.*)').match(currentElement.text().toLowerCase())
+                const openTimeRegex = /(\d?\d:\d?\d) às (\d?\d:\d?\d)/
+                const match = openTimeRegex.exec($(currentElement).text().toLowerCase())
                 if (match) {
                     weekdayScheduleJSON[weekdayScheduleKey] = {
                         start_time: match[1],
@@ -110,12 +138,54 @@ function createSingleWeekdayScheduleJSON($, singleWeekdayStartElement) {
     return weekdayScheduleJSON
 }
 
-function createSingleCampusScheduleJSON($, singleCampusStartElement) {
-    const campusScheduleJSON = {}
-    let currentElement = $(singleCampusStartElement).next()
+function creatSingleDayScheduleJSON($, singleCampusStartElement, dayName) {
+    const weekdayStartElement = findWeekdayStartElement($, singleCampusStartElement, dayName)
+    if (weekdayStartElement) {
+        return createSingleWeekdayScheduleJSON($, weekdayStartElement)
+    } else {
+        return {lunch: null, dinner: null}
+    }
+}
+
+function createSingleCampusWeekdayScheduleList($, singleCampusStartElement) {
+    const campusSchedule = []
 
     for (let weekday of weekdays) {
+        campusSchedule.push({
+            name: weekday.name,
+            abbreviation: weekday.abbreviation,
+            schedule: creatSingleDayScheduleJSON($, singleCampusStartElement, weekday.name)
+        })
     }
 
-    return campusScheduleJSON
+    return campusSchedule
+}
+
+
+export default function getSchedulesJSON($) {
+    const currentDate = new Date()
+    const fullScheduleJSON = {
+        last_update: {
+            date: `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`,
+            time: `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`
+        },
+        info_from: ruInfoUrl,
+        info_type: 'automatic',
+        campi_schedules: []
+    }
+
+    for (let campus of campi) {
+        const campusStartElement = findCampusStartElement($, campus.name)
+        if (campusStartElement) {
+            fullScheduleJSON.campi_schedules.push({
+                name: campus.name,
+                query_name: campus.queryName,
+                weekdays_schedules: createSingleCampusWeekdayScheduleList($, campusStartElement),
+                holiday_schedule: creatSingleDayScheduleJSON($, campusStartElement, 'feriado'),
+                optional_workday_schedule: creatSingleDayScheduleJSON($, campusStartElement, 'ponto facultativo') 
+            })
+        }
+    }
+
+    return fullScheduleJSON
 }
