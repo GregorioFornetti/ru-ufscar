@@ -59,10 +59,10 @@ Retorna um JSON no seguinte formato:
         dessert: "string"  // Sobremesas
       },
       dinner: {  // Objeto ou null: Cardápio do janta  (OBS: será null se não tiver um cardápio definido para o almoço naquele dia)
-        ...  // O objeto do jantar possui as mesmas propriedades do objeto do almoço
+        // ... O objeto do jantar possui as mesmas propriedades do objeto do almoço
       }
     }
-    ... // Os outros dias seguem todos o mesmo formato definido acima
+    // ... Os outros dias seguem todos o mesmo formato definido acima
   ]
 }
 ```
@@ -242,7 +242,7 @@ Retorna um JSON no seguinte formato:
       price: "number",  // Preço a ser pago pela categoria
       number_in_full: "string"  // Preço a ser pago em extenso
     }
-    ...  // Para cada categoria temos um objeto igual ao exemplo mostrado acima
+    // ... Para cada categoria temos um objeto igual ao exemplo mostrado acima
   ]
 }
 ```
@@ -293,6 +293,8 @@ Exemplo de resposta:
 
 ```
 /schedules
+OU
+/schedules?campus=<nome-do-campus-codificado>
 ```
 
 #### Método
@@ -303,4 +305,82 @@ GET
 
 #### Descrição
 
+Consulta os horários de funcionamento dos campi. 
+
+Essa consulta aceita o parâmetro de busca `campus`, para a especificação de qual campus os horários devem ser retornados.
+
+Caso não seja fornecido nenhum valor do parâmetro `campus`, então, todos os horários de funcionamento serão retornados.
+
+Valores possíveis de `campus`:
+
+- `sao-carlos` (São Carlos)
+- `sorocaba` (Sorocaba)
+- `lagoa-do-sino` (Lagoa do Sino)
+- `araras` (Araras)
+
+Caso tenha sido fornecido um valor de `campus` incorreto (inexistente), será retornado uma mensagem de erro, com o status 404.
+
 #### Resposta
+
+Caso nenhum valor tenha sido fornecido no parâmetro `campus`, o JSON terá o seguinte formato:
+
+```javascript
+{
+  last_update: {  // Data e horário da última atualização do cardápio
+    date: "string",  // Data da última atualização do cardápio no formato DD/MM/YYYY
+    time: "string"  // Horário da última atualização no formato HH:MM
+  },
+  info_from: "string",  // De onde veio as informações (ex: site do RU)
+  info_type: "string: 'manual' ou 'automatic'",  // manual: se as informações foram coletadas manualmente | automatic: se foram coletadas automáticamente
+  campi_schedules: [  // Uma lista contendo informações do cardápio de cada dia (totalizando 7 elementos na lista) - Primeiro será o cardápio de domingo, depois segunda, ...
+    {
+      name: "string",  //
+      query_name: "string",  //
+      weekday_schedules: [  //
+        {
+          name: "string",  //
+          abbreviation: "string",  //
+          schedule {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+            lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+              start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+              end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+            },
+            dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+              start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+              end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+            }
+          }
+        }
+        // ... Os outros dias seguem todos o mesmo formato definido acima
+      ],
+      holiday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+        lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+        },
+        dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+        }
+      },
+      optional_workday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+        lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+        },
+        dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+          start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+        }
+      }
+    }
+    // ... Todos os campi seguem o mesmo padrão, para cada campus, um objeto com o mesmno padrão definido logo acima será retornado
+  ]
+}
+```
+
+E um exemplo de resposta nesse caso é:
+
+Caso seja fornecido um valor do parâmetro `campus`, ele terá o seguinte formato:
+
+E um exemplo de resposta nesse caso, usando `campus=sorocaba`, temos:
