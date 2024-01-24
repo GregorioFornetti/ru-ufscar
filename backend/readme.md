@@ -222,9 +222,70 @@ GET
 
 #### Descrição
 
+Consulta os preços da refeição no RU, por categorias.
+
 #### Resposta
 
+Retorna um JSON no seguinte formato:
 
+```javascript
+{
+  last_update: {  // Data e horário da última atualização do cardápio
+    date: "string",  // Data da última atualização do cardápio no formato DD/MM/YYYY
+    time: "string"  // Horário da última atualização no formato HH:MM
+  },
+  info_from: "string",  // De onde veio as informações (ex: site do RU)
+  info_type: "string: 'manual' ou 'automatic'",  // manual: se as informações foram coletadas manualmente | automatic: se foram coletadas automáticamente
+  prices: [
+    {
+      category: "string",  // Categoria (discentes, servidores, etc)
+      price: "number",  // Preço a ser pago pela categoria
+      number_in_full: "string"  // Preço a ser pago em extenso
+    }
+    ...  // Para cada categoria temos um objeto igual ao exemplo mostrado acima
+  ]
+}
+```
+
+Exemplo de resposta:
+
+```javascript
+{
+  "last_update": {
+    "date": "24/01/2024",
+    "time": "12:20"
+  },
+  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
+  "info_type": "automatic",
+  "prices": [
+    {
+      "category": "discente bolsista",
+      "price": 0,
+      "number_in_full": "zero"
+    },
+    {
+      "category": "discente categoria intermediário",
+      "price": 2.5,
+      "number_in_full": "dois reais e cinquenta centavos"
+    },
+    {
+      "category": "discente regular (graduação e pós graduação)",
+      "price": 4.2,
+      "number_in_full": "quatro reais e vinte centavos"
+    },
+    {
+      "category": "servidor (técnico administrativo e docente)",
+      "price": 12.39,
+      "number_in_full": "doze reais e trinta e nove centavos"
+    },
+    {
+      "category": "visitante",
+      "price": 12.5,
+      "number_in_full": "doze reais e cinquenta centavos"
+    }
+  ]
+}
+```
 
 ### Consultar horário de funcionamento
 
