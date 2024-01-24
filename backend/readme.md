@@ -230,7 +230,7 @@ Retorna um JSON no seguinte formato:
 
 ```javascript
 {
-  last_update: {  // Data e horário da última atualização do cardápio
+  last_update: {  // Data e horário da última atualização dos preços
     date: "string",  // Data da última atualização do cardápio no formato DD/MM/YYYY
     time: "string"  // Horário da última atualização no formato HH:MM
   },
@@ -326,27 +326,27 @@ Caso nenhum valor tenha sido fornecido no parâmetro `campus`, o JSON terá o se
 
 ```javascript
 {
-  last_update: {  // Data e horário da última atualização do cardápio
+  last_update: {  // Data e horário da última atualização dos horários de funcionamento
     date: "string",  // Data da última atualização do cardápio no formato DD/MM/YYYY
     time: "string"  // Horário da última atualização no formato HH:MM
   },
   info_from: "string",  // De onde veio as informações (ex: site do RU)
   info_type: "string: 'manual' ou 'automatic'",  // manual: se as informações foram coletadas manualmente | automatic: se foram coletadas automáticamente
-  campi_schedules: [  // Uma lista contendo informações do cardápio de cada dia (totalizando 7 elementos na lista) - Primeiro será o cardápio de domingo, depois segunda, ...
+  campi_schedules: [  // Uma lista contendo os horários de funcionamento para cada campi
     {
-      name: "string",  //
-      query_name: "string",  //
-      weekday_schedules: [  //
+      name: "string",  // Nome da cidade do campus (Ex: São Carlos)
+      query_name: "string",  // Nome codificado para busca usando o parâmetro campus (Ex sao-carlos)
+      weekday_schedules: [  // Uma lista contendo informações do funcionamento de cada dia (totalizando 7 elementos na lista) - Primeiro será o cardápio de domingo, depois segunda, ... (OBS: não conta pontos facultativos ou feriados)
         {
-          name: "string",  //
-          abbreviation: "string",  //
+          name: "string",  // Nome do dia da semana (Ex: segunda-feira)
+          abbreviation: "string",  // Abreviação do nome do dia da semana (Ex: seg)
           schedule {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
             lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
               start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
               end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
             },
             dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
-              start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+              start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
               end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
             }
           }
@@ -355,17 +355,17 @@ Caso nenhum valor tenha sido fornecido no parâmetro `campus`, o JSON terá o se
       ],
       holiday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
         lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
-          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
           end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
         },
         dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
-          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
           end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
         }
       },
       optional_workday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
         lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
-          start_time:	"string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+          start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
           end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
         },
         dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
@@ -381,6 +381,601 @@ Caso nenhum valor tenha sido fornecido no parâmetro `campus`, o JSON terá o se
 
 E um exemplo de resposta nesse caso é:
 
+```javascript
+{
+  "last_update": {
+    "date": "24/01/2024",
+    "time": "13:20"
+  },
+  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
+  "info_type": "automatic",
+  "campi_schedules": [
+    {
+      "name": "São Carlos",
+      "query_name": "sao-carlos",
+      "weekdays_schedules": [
+        {
+          "name": "domingo",
+          "abbreviation": "dom",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:30",
+              "end_time": "13:00"
+            },
+            "dinner": {
+              "start_time": "17:30",
+              "end_time": "18:30"
+            }
+          }
+        },
+        {
+          "name": "segunda-feira",
+          "abbreviation": "seg",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "14:00"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "terça-feira",
+          "abbreviation": "ter",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "14:00"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "quarta-feira",
+          "abbreviation": "qua",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "14:00"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "quinta-feira",
+          "abbreviation": "qui",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "14:00"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "sexta-feira",
+          "abbreviation": "sex",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "14:00"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "sábado",
+          "abbreviation": "sáb",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:30",
+              "end_time": "13:00"
+            },
+            "dinner": {
+              "start_time": "17:30",
+              "end_time": "18:30"
+            }
+          }
+        }
+      ],
+      "holiday_schedule": {
+        "lunch": {
+          "start_time": "11:30",
+          "end_time": "13:00"
+        },
+        "dinner": {
+          "start_time": "17:30",
+          "end_time": "18:30"
+        }
+      },
+      "optional_workday_schedule": {
+        "lunch": {
+          "start_time": "11:30",
+          "end_time": "13:00"
+        },
+        "dinner": {
+          "start_time": "17:30",
+          "end_time": "18:30"
+        }
+      }
+    },
+    {
+      "name": "Sorocaba",
+      "query_name": "sorocaba",
+      "weekdays_schedules": [
+        {
+          "name": "domingo",
+          "abbreviation": "dom",
+          "schedule": {
+            "lunch": null,
+            "dinner": null
+          }
+        },
+        {
+          "name": "segunda-feira",
+          "abbreviation": "seg",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "terça-feira",
+          "abbreviation": "ter",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "quarta-feira",
+          "abbreviation": "qua",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "quinta-feira",
+          "abbreviation": "qui",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "sexta-feira",
+          "abbreviation": "sex",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "17:00",
+              "end_time": "19:00"
+            }
+          }
+        },
+        {
+          "name": "sábado",
+          "abbreviation": "sáb",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:00"
+            },
+            "dinner": null
+          }
+        }
+      ],
+      "holiday_schedule": {
+        "lunch": null,
+        "dinner": null
+      },
+      "optional_workday_schedule": {
+        "lunch": null,
+        "dinner": null
+      }
+    },
+    {
+      "name": "Araras",
+      "query_name": "araras",
+      "weekdays_schedules": [
+        {
+          "name": "domingo",
+          "abbreviation": "dom",
+          "schedule": {
+            "lunch": null,
+            "dinner": null
+          }
+        },
+        {
+          "name": "segunda-feira",
+          "abbreviation": "seg",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "18:00",
+              "end_time": "19:30"
+            }
+          }
+        },
+        {
+          "name": "terça-feira",
+          "abbreviation": "ter",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "18:00",
+              "end_time": "19:30"
+            }
+          }
+        },
+        {
+          "name": "quarta-feira",
+          "abbreviation": "qua",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "18:00",
+              "end_time": "19:30"
+            }
+          }
+        },
+        {
+          "name": "quinta-feira",
+          "abbreviation": "qui",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "18:00",
+              "end_time": "19:30"
+            }
+          }
+        },
+        {
+          "name": "sexta-feira",
+          "abbreviation": "sex",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "13:30"
+            },
+            "dinner": {
+              "start_time": "18:00",
+              "end_time": "19:30"
+            }
+          }
+        },
+        {
+          "name": "sábado",
+          "abbreviation": "sáb",
+          "schedule": {
+            "lunch": {
+              "start_time": "11:00",
+              "end_time": "12:30"
+            },
+            "dinner": null
+          }
+        }
+      ],
+      "holiday_schedule": {
+        "lunch": null,
+        "dinner": null
+      },
+      "optional_workday_schedule": {
+        "lunch": null,
+        "dinner": null
+      }
+    },
+    {
+      "name": "Lagoa do Sino",
+      "query_name": "lagoa-do-sino",
+      "weekdays_schedules": [
+        {
+          "name": "domingo",
+          "abbreviation": "dom",
+          "schedule": {
+            "lunch": null,
+            "dinner": null
+          }
+        },
+        {
+          "name": "segunda-feira",
+          "abbreviation": "seg",
+          "schedule": {
+            "lunch": {
+              "start_time": "10:30",
+              "end_time": "13:30"
+            },
+            "dinner": null
+          }
+        },
+        {
+          "name": "terça-feira",
+          "abbreviation": "ter",
+          "schedule": {
+            "lunch": {
+              "start_time": "10:30",
+              "end_time": "13:30"
+            },
+            "dinner": null
+          }
+        },
+        {
+          "name": "quarta-feira",
+          "abbreviation": "qua",
+          "schedule": {
+            "lunch": {
+              "start_time": "10:30",
+              "end_time": "13:30"
+            },
+            "dinner": null
+          }
+        },
+        {
+          "name": "quinta-feira",
+          "abbreviation": "qui",
+          "schedule": {
+            "lunch": {
+              "start_time": "10:30",
+              "end_time": "13:30"
+            },
+            "dinner": null
+          }
+        },
+        {
+          "name": "sexta-feira",
+          "abbreviation": "sex",
+          "schedule": {
+            "lunch": {
+              "start_time": "10:30",
+              "end_time": "13:30"
+            },
+            "dinner": null
+          }
+        },
+        {
+          "name": "sábado",
+          "abbreviation": "sáb",
+          "schedule": {
+            "lunch": null,
+            "dinner": null
+          }
+        }
+      ],
+      "holiday_schedule": {
+        "lunch": null,
+        "dinner": null
+      },
+      "optional_workday_schedule": {
+        "lunch": null,
+        "dinner": null
+      }
+    }
+  ]
+}
+```
+
 Caso seja fornecido um valor do parâmetro `campus`, ele terá o seguinte formato:
 
+
+```javascript
+{
+  last_update: {  // Data e horário da última atualização dos horários de funcionamento
+    date: "string",  // Data da última atualização do cardápio no formato DD/MM/YYYY
+    time: "string"  // Horário da última atualização no formato HH:MM
+  },
+  info_from: "string",  // De onde veio as informações (ex: site do RU)
+  info_type: "string: 'manual' ou 'automatic'",  // manual: se as informações foram coletadas manualmente | automatic: se foram coletadas automáticamente
+  campus_schedules: {  // Horário de funcionamento do campus selecionado no parâmetro de busca campus
+    name: "string",  // Nome da cidade do campus (Ex: São Carlos)
+    query_name: "string",  // Nome codificado para busca usando o parâmetro campus (Ex sao-carlos)
+    weekday_schedules: [  // Uma lista contendo informações do funcionamento de cada dia (totalizando 7 elementos na lista) - Primeiro será o cardápio de domingo, depois segunda, ... (OBS: não conta pontos facultativos ou feriados)
+      {
+        name: "string",  // Nome do dia da semana (Ex: segunda-feira)
+        abbreviation: "string",  // Abreviação do nome do dia da semana (Ex: seg)
+        schedule {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+          lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+            start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+            end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+          },
+          dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+            start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+            end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+          }
+        }
+      }
+      // ... Os outros dias seguem todos o mesmo formato definido acima
+    ],
+    holiday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+      lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+        start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+        end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+      },
+      dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+        start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+        end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+      }
+    },
+    optional_workday_schedule: {  // Horários de funcionamento naquele dia especifico (tanto no almoço, quanto no jantar)
+      lunch: {  // Horário de funcionamento no almoço - Pode ser null caso o restaurante não funcione neste dia no almoço
+        start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+        end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+      },
+      dinner: {  // Horário de funcionamento no jantar - Pode ser null caso o restaurante não funcione neste dia no jantar
+        start_time: "string",  // Momento em que o restaurante irá abrir (no formato HH:MM)
+        end_time: "string"  // Momento em que o restaurante irá fechar (no formato HH:MM)
+      }
+    }
+  }
+}
+```
+
 E um exemplo de resposta nesse caso, usando `campus=sorocaba`, temos:
+
+```javascript
+{
+  "last_update": {
+    "date": "24/01/2024",
+    "time": "18:21"
+  },
+  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
+  "info_type": "automatic",
+  "campus_schedules": {
+    "name": "Sorocaba",
+    "query_name": "sorocaba",
+    "weekdays_schedules": [
+      {
+        "name": "domingo",
+        "abbreviation": "dom",
+        "schedule": {
+          "lunch": null,
+          "dinner": null
+        }
+      },
+      {
+        "name": "segunda-feira",
+        "abbreviation": "seg",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:30"
+          },
+          "dinner": {
+            "start_time": "17:00",
+            "end_time": "19:00"
+          }
+        }
+      },
+      {
+        "name": "terça-feira",
+        "abbreviation": "ter",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:30"
+          },
+          "dinner": {
+            "start_time": "17:00",
+            "end_time": "19:00"
+          }
+        }
+      },
+      {
+        "name": "quarta-feira",
+        "abbreviation": "qua",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:30"
+          },
+          "dinner": {
+            "start_time": "17:00",
+            "end_time": "19:00"
+          }
+        }
+      },
+      {
+        "name": "quinta-feira",
+        "abbreviation": "qui",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:30"
+          },
+          "dinner": {
+            "start_time": "17:00",
+            "end_time": "19:00"
+          }
+        }
+      },
+      {
+        "name": "sexta-feira",
+        "abbreviation": "sex",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:30"
+          },
+          "dinner": {
+            "start_time": "17:00",
+            "end_time": "19:00"
+          }
+        }
+      },
+      {
+        "name": "sábado",
+        "abbreviation": "sáb",
+        "schedule": {
+          "lunch": {
+            "start_time": "11:00",
+            "end_time": "13:00"
+          },
+          "dinner": null
+        }
+      }
+    ],
+    "holiday_schedule": {
+      "lunch": null,
+      "dinner": null
+    },
+    "optional_workday_schedule": {
+      "lunch": null,
+      "dinner": null
+    }
+  }
+}
+```
