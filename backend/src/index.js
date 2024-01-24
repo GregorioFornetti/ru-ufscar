@@ -30,6 +30,10 @@ app.get('/schedules', (req, res) => {
     }
 })
 
+app.get('/prices', (req, res) => {
+    res.json(responses.getPrices())
+})
+
 app.listen(port, () => {
     console.log(`RU app listening at port ${port}`)
 })

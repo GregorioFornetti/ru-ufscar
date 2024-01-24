@@ -69,8 +69,9 @@ function findCampusStartElement($, campusName) {
 
 function findWeekdayStartElement($, campusStartElement, weekdayName) {
     let currentElement = $(campusStartElement).next()
+    const weekdayRegex = new RegExp('(.*) à (.*)')
+
     while (currentElement.next().length > 0) {
-        const weekdayRegex = new RegExp('(.*) à (.*)')
         const match = $(currentElement).text().toLowerCase().match(weekdayRegex)
         if (match) {
             let startWeekday = match[1]
@@ -109,6 +110,7 @@ function createSingleWeekdayScheduleJSON($, singleWeekdayStartElement) {
         lunch: 'almoço',
         dinner: 'jantar'
     }
+    const openTimeRegex = /(\d?\d:\d?\d) às (\d?\d:\d?\d)/
 
     let currentElement = $(singleWeekdayStartElement).next()
 
@@ -116,7 +118,6 @@ function createSingleWeekdayScheduleJSON($, singleWeekdayStartElement) {
         let found = false
         for (let weekdayScheduleKey in weekdayScheduleItensDict) {
             if ($(currentElement).text().toLowerCase().includes(weekdayScheduleItensDict[weekdayScheduleKey])) {
-                const openTimeRegex = /(\d?\d:\d?\d) às (\d?\d:\d?\d)/
                 const match = openTimeRegex.exec($(currentElement).text().toLowerCase())
                 if (match) {
                     weekdayScheduleJSON[weekdayScheduleKey] = {

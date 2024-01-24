@@ -1,7 +1,8 @@
 
 import { getRuInfo } from "./webscrapping/RU.js";
 import getWeekMenu from "./webscrapping/weekMenu.js";
-import getSchedules, { campi } from "./webscrapping/schedules.js";
+import getSchedules from "./webscrapping/schedules.js";
+import getPrices from "./webscrapping/prices.js";
 
 import * as cheerio from 'cheerio';
 
@@ -10,6 +11,7 @@ export default class Responses {
     constructor() {
         this.weekMenuJSON = {}
         this.schedulesJSON = {}
+        this.pricesJSON = {}
     }
 
     async updateAll() {
@@ -18,6 +20,7 @@ export default class Responses {
 
         this.weekMenuJSON = getWeekMenu($)
         this.schedulesJSON = getSchedules($)
+        this.pricesJSON = getPrices($)
     }
 
     getWeekMenu() {
@@ -41,5 +44,9 @@ export default class Responses {
 
             return null
         }
+    }
+
+    getPrices() {
+        return this.pricesJSON
     }
 }
