@@ -8,7 +8,7 @@ import TheWelcome from './components/TheWelcome.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <h1>PAGINA DO ADMIN =D</h1>
+      <h1>PAGINA DE AUTENTICACAO =D</h1>
       <HelloWorld msg="You did it!" />
     </div>
   </header>

@@ -1,6 +1,8 @@
 
 import Responses from "./responses.js";
 import express from "express";
+import cors from 'cors'
+import { port, publicPath, adminPath, apiPath } from './configs/index.js'
 
 const updateIntervalInHours = 1
 
@@ -12,16 +14,31 @@ setInterval(() => {
     responses.updateAll()
 }, updateIntervalInHours * 60 * 60 * 1000)
 
-
-
 const app = express()
-const port = 3000
 
-app.get('/week-menu', (req, res) => {
+if (process.env.NODE_ENV === 'production') {
+    app.use(
+        express.json()
+    )
+} else {
+    app.use(
+        express.json(),
+        cors()
+    )
+}
+
+const frontendPath = '../frontend'
+const frontendPublicPath = `${frontendPath}/public/dist`
+const frontendAdminPath = `${frontendPath}/admin/dist`
+
+app.use(publicPath, express.static(frontendPublicPath))
+app.use(adminPath, express.static(frontendAdminPath))
+
+app.get(`${apiPath}/week-menu`, (req, res) => {
     res.json(responses.getWeekMenu())
 })
 
-app.get('/schedules', (req, res) => {
+app.get(`${apiPath}/schedules`, (req, res) => {
     const schedulesJSON = responses.getSchedules(req.query.campus)
     if (schedulesJSON) {
         res.json(schedulesJSON)
@@ -30,7 +47,7 @@ app.get('/schedules', (req, res) => {
     }
 })
 
-app.get('/prices', (req, res) => {
+app.get(`${apiPath}/prices`, (req, res) => {
     res.json(responses.getPrices())
 })
 
