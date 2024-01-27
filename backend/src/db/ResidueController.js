@@ -26,7 +26,6 @@ async function getCurrentResidues() {
 residues = await getCurrentResidues()
 
 function residuesToJSON(residues) {
-    console.log(residues)
     return residues.map((residue) => ({
         id: Number(residue.id),
         type: residue.type,
@@ -42,7 +41,7 @@ function resetResidues() {
     residues = null
 }
 
-function verifyResidue(residueBody, id) {
+function verifyResidue(residueBody, residues, id) {
     // if is a valid residue, return [true, residue]
     // if is a invalid residue, return [false, { message: ... }]
 
@@ -133,9 +132,13 @@ export async function getResidues(req, res) {
     const startDate = startDateString ? ISOStringToDate(startDateString) : null
     const endDate = endDateString ? ISOStringToDate(endDateString) : null
 
+    if (startDate && endDate && startDate > endDate) {
+        return res.status(400).json({ message: 'Invalid date range!' })
+    }
+
     try {
         const residues = await getCurrentResidues()
-        if (!startDate || !endDate) {
+        if (!startDate && !endDate) {
             // Return all residues
             resultResidues = await getCurrentResidues()
         } else if (!startDate && endDate) {
@@ -176,7 +179,7 @@ export async function getResidueById(req, res) {
 
 export async function createResidue(req, res) {
     try {
-        const residueInfo = verifyResidue(req.body)
+        const residueInfo = verifyResidue(req.body, await getCurrentResidues())
         if (!residueInfo[0]) {
             return res.status(400).json(residueInfo[1])
         }
@@ -205,7 +208,7 @@ export async function updateResidue(req, res) {
         const residue = residues.find((residue) => residue.id === Number(id))
 
         if (residue) {
-            const residueInfo = verifyResidue(req.body, id)
+            const residueInfo = verifyResidue(req.body, residues, id)
             if (!residueInfo[0]) {
                 return res.status(400).json(residueInfo[1])
             }
