@@ -1,10 +1,8 @@
 
 import Residue from './Residue.js'
-import { ISOStringToDate, ISODateToBrazilianDateString, brazilianStringToDate, isISOString, ISOStringToDate } from './dateUtils.js'
+import { ISOStringToDate, ISODateToBrazilianDateString, isISOString, ISODateStringToBrazilianDateString } from './dateUtils.js'
 
 var residues
-
-
 
 async function getCurrentResidues() {
     if (!residues) {
@@ -15,7 +13,7 @@ async function getCurrentResidues() {
             id: Number(residue.id),
             type: residue.type,
             date: ISOStringToDate(residue.date),
-            formatedDate: ISODateToBrazilianDateString(residue.date),
+            formatedDate: ISODateStringToBrazilianDateString(residue.date),
             preparationResidues: residue.preparationResidues,
             plateRemainsResidues: residue.plateRemainsResidues,
             counterRemainsResidues: residue.counterRemainsResidues,
@@ -25,7 +23,10 @@ async function getCurrentResidues() {
     return residues
 }
 
+residues = await getCurrentResidues()
+
 function residuesToJSON(residues) {
+    console.log(residues)
     return residues.map((residue) => ({
         id: Number(residue.id),
         type: residue.type,
@@ -41,84 +42,96 @@ function resetResidues() {
     residues = null
 }
 
-function verifyResidue(residue, id) {
+function verifyResidue(residueBody, id) {
     // if is a valid residue, return [true, residue]
     // if is a invalid residue, return [false, { message: ... }]
 
-    if (!residue.type) {
+    if (!residueBody.type) {
         return [false, { message: 'Residue type is required!' }]
     }
 
-    if (!residue.date) {
+    if (!residueBody.date) {
         return [false, { message: 'Date is required!' }]
     }
 
-    if (!residue.preparationResidues) {
+    if (!residueBody.preparationResidues) {
         return [false, { message: 'Preparation residues is required!' }]
     }
 
-    if (!residue.plateRemainsResidues) {
+    if (!residueBody.plateRemainsResidues) {
         return [false, { message: 'Plate remains residues is required!' }]
     }
 
-    if (!residue.counterRemainsResidues) {
+    if (!residueBody.counterRemainsResidues) {
         return [false, { message: 'Counter remains residues is required!' }]
     }
 
-    if (!residue.preparedFood) {
+    if (!residueBody.preparedFood) {
         return [false, { message: 'Prepared food is required!' }]
     }
 
     const residue = {
-        type: residue.type.toLowerCase(),
-        date: residue.date,
-        preparationResidues: residue.preparationResidues,
-        plateRemainsResidues: residue.plateRemainsResidues,
-        counterRemainsResidues: residue.counterRemainsResidues,
-        preparedFood: residue.preparedFood
+        type: residueBody.type.toLowerCase(),
+        date: residueBody.date,
+        preparationResidues: residueBody.preparationResidues,
+        plateRemainsResidues: residueBody.plateRemainsResidues,
+        counterRemainsResidues: residueBody.counterRemainsResidues,
+        preparedFood: residueBody.preparedFood
     }
+    const date = ISOStringToDate(residue.date).toDateString()
 
-    if (residues.any((curResidue) =>{
+    if (residues.some((curResidue) => {
         if (curResidue.id === id) {
             return false
         }
-        return curResidue.type === residue.type && curResidue.date === residue.date
+        return curResidue.type === residue.type && curResidue.date.toDateString() === date
     })) {
         return [false, { message: 'Residue already exists!' }]
     }
 
-    if (residue.type !== 'almoco' && residue.type !== 'jantar') {
-        return { message: 'Invalid residue type!' }
+    if (residue.type !== 'almoço' && residue.type !== 'jantar') {
+        return [false, { message: 'Invalid residue type!' }]
     }
 
     if (!isISOString(residue.date)) {
-        return { message: 'Invalid date!' }
+        return [false, { message: 'Invalid date!' }]
     }
 
     if (typeof residue.preparationResidues !== 'number' || residue.preparationResidues < 0) {
-        return { message: 'Invalid preparation residues!' }
+        return [false, { message: 'Invalid preparation residues!' }]
     }
 
     if (typeof residue.plateRemainsResidues !== 'number' || residue.plateRemainsResidues < 0) {
-        return { message: 'Invalid plate remains residues!' }
+        return [false, { message: 'Invalid plate remains residues!' }]
     }
 
     if (typeof residue.counterRemainsResidues !== 'number' || residue.counterRemainsResidues < 0) {
-        return { message: 'Invalid counter remains residues!' }
+        return [false, { message: 'Invalid counter remains residues!' }]
     }
 
     if (typeof residue.preparedFood !== 'number' || residue.preparedFood < 0) {
-        return { message: 'Invalid prepared food!' }
+        return [false, { message: 'Invalid prepared food!' }]
     }
 
-    return residue
+    return [true, residue]
 }
 
 
 export async function getResidues(req, res) {
-    const startDate = req.query.startDate
-    const endDate = req.query.endDate
+    const startDateString = req.query.startDate
+    const endDateString = req.query.endDate
     var resultResidues
+
+    if (startDateString && !isISOString(startDateString)) {
+        return res.status(400).json({ message: 'Invalid startDate!' })
+    }
+
+    if (endDateString && !isISOString(endDateString)) {
+        return res.status(400).json({ message: 'Invalid endDate!' })
+    }
+
+    const startDate = startDateString ? ISOStringToDate(startDateString) : null
+    const endDate = endDateString ? ISOStringToDate(endDateString) : null
 
     try {
         const residues = await getCurrentResidues()
@@ -135,9 +148,6 @@ export async function getResidues(req, res) {
             // Return residues between startDate and endDate
             resultResidues = residues.filter((residue) => residue.date >= startDate && residue.date <= endDate)
         }
-
-        const date = new Date(resultResidues[0].date)
-
 
         if (resultResidues.length > 0) {
             res.status(200).json(residuesToJSON(resultResidues))
@@ -177,7 +187,7 @@ export async function createResidue(req, res) {
         return res.status(200).json({
             id: Number(newResidue.id), 
             type: newResidue.type,
-            date: ISODateToBrazilianDateString(newResidue.date),
+            date: ISODateStringToBrazilianDateString(newResidue.date),
             preparationResidues: newResidue.preparationResidues,
             plateRemainsResidues: newResidue.plateRemainsResidues,
             counterRemainsResidues: newResidue.counterRemainsResidues,
@@ -210,7 +220,7 @@ export async function updateResidue(req, res) {
             res.status(200).json({
                 id: Number(id),
                 type: req.body.type,
-                date: ISODateToBrazilianDateString(req.body.date),
+                date: ISODateStringToBrazilianDateString(req.body.date),
                 preparationResidues: req.body.preparationResidues,
                 plateRemainsResidues: req.body.plateRemainsResidues,
                 counterRemainsResidues: req.body.counterRemainsResidues,

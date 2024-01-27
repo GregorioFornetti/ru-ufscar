@@ -18,7 +18,7 @@ export function ISOStringToDate(isoDateString) {
 
 export function ISODateToBrazilianDateString(isoDate) {
     // Convert a string in format YYYY-MM-DD to a string in format DD/MM/YYYY
-    return `${isoDate.getDate()}/${isoDate.getMonth() + 1}/${isoDate.getFullYear()}`
+    return `${isoDate.getDate().toString().padStart(2, '0')}/${(isoDate.getMonth() + 1).toString().padStart(2, '0')}/${isoDate.getFullYear()}`
 }
 
 export function ISODateStringToBrazilianDateString(isoDateString) {
