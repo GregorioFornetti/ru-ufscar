@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize'
 import { dbHost, dbName, dbPassword, dbPort, dbUser } from '../configs/index.js'
 
+console.log(dbHost, dbName, dbPassword, dbPort, dbUser)
+
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     dialect: 'postgres',
     host: dbHost,

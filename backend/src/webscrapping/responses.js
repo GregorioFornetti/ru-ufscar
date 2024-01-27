@@ -1,8 +1,8 @@
 
-import { getRuInfo } from "./webscrapping/RU.js";
-import getWeekMenu from "./webscrapping/weekMenu.js";
-import getSchedules from "./webscrapping/schedules.js";
-import getPrices from "./webscrapping/prices.js";
+import { getRuInfo } from "./RU.js";
+import getWeekMenu from "./weekMenu.js";
+import getSchedules from "./schedules.js";
+import getPrices from "./prices.js";
 
 import * as cheerio from 'cheerio';
 

@@ -6,6 +6,6 @@ export default function redirectIfNotAuth(req, res, next) {
     if (req.originalUrl !== `${admPath}/` || req.session.password === password) {
         next()
     } else {
-        res.redirect(`${admPath}/auth`)
+        res.redirect(`${admPath}/auth.html`)
     }
 }

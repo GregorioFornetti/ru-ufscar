@@ -1,12 +1,19 @@
 
 
 import express from "express";
+import session from 'express-session'
 import cors from 'cors'
 import { port, publicPath, adminPath} from './configs/index.js'
 import RuRouter from './webscrapping/RuRouter.js'
 import ResiduesRouter from './db/ResiduesRoutes.js'
 
 const app = express()
+
+app.use(session({  // Muito oq melhorar aqui, em relação a segurança...
+    secret: 'segredo123',
+    resave: false,
+    saveUninitialized: true
+}))
 
 if (process.env.NODE_ENV === 'production') {
     app.use(

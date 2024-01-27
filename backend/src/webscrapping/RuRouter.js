@@ -1,7 +1,7 @@
 
 import Responses from "./responses.js";
 import { Router } from "express";
-import { apiPath } from './configs/index.js'
+import { apiPath } from '../configs/index.js'
 
 // Atualiza o conteúdo do menu de tempos em tempos, enquanto estiver executando
 const updateIntervalInHours = 1
