@@ -6,6 +6,8 @@ import cors from 'cors'
 import { port, publicPath, adminPath} from './configs/index.js'
 import RuRouter from './webscrapping/RuRouter.js'
 import ResiduesRouter from './db/ResiduesRoutes.js'
+import AuthenticationRouter from './db/AutenthicationRoutes.js'
+import redirectIfNoAuth from './db/redirect.js'
 
 const app = express()
 
@@ -30,12 +32,15 @@ const frontendPath = '../frontend'
 const frontendPublicPath = `${frontendPath}/public/dist`
 const frontendAdminPath = `${frontendPath}/admin/dist`
 
+app.use(redirectIfNoAuth)
+
 app.use(publicPath, express.static(frontendPublicPath))
 app.use(adminPath, express.static(frontendAdminPath))
 
 
 app.use(RuRouter)
 app.use(ResiduesRouter)
+app.use(AuthenticationRouter)
 
 
 app.listen(port, () => {
