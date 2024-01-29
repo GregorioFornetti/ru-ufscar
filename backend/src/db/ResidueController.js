@@ -83,6 +83,7 @@ function verifyResidue(residueBody, residues, id) {
         if (curResidue.id === id) {
             return false
         }
+        console.log(curResidue)
         return curResidue.type === residue.type && curResidue.date.toDateString() === date
     })) {
         return [false, { message: 'Residue already exists!' }]
@@ -208,7 +209,7 @@ export async function updateResidue(req, res) {
         const residue = residues.find((residue) => residue.id === Number(id))
 
         if (residue) {
-            const residueInfo = verifyResidue(req.body, residues, id)
+            const residueInfo = verifyResidue(req.body, residues, Number(id))
             if (!residueInfo[0]) {
                 return res.status(400).json(residueInfo[1])
             }
@@ -251,7 +252,7 @@ export async function deleteResidue(req, res) {
             })
 
             resetResidues()
-            res.status(200).json({ message: 'Residue deleted!' })
+            res.status(200).json({ success: 'Residue deleted!' })
         } else {
             res.status(404).json({ message: 'Residue not found!' })
         }

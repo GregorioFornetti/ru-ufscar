@@ -32,15 +32,13 @@ const frontendPath = '../frontend'
 const frontendPublicPath = `${frontendPath}/public/dist`
 const frontendAdminPath = `${frontendPath}/admin/dist`
 
-app.use(redirectIfNoAuth)
-
-app.use(publicPath, express.static(frontendPublicPath))
-app.use(adminPath, express.static(frontendAdminPath))
-
-
 app.use(RuRouter)
 app.use(ResiduesRouter)
 app.use(AuthenticationRouter)
+
+app.use(publicPath, express.static(frontendPublicPath))
+app.use(redirectIfNoAuth)
+app.use(adminPath, express.static(frontendAdminPath))
 
 
 app.listen(port, () => {
