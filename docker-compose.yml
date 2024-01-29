@@ -1,13 +1,69 @@
-version: '3'
+version: "3"
 services:
-  nodejs:
-    container_name: node_server
-    image: node:latest
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./:/app
-    working_dir: /app
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/server.Dockerfile
+      args:
+        admin_path: ${ADMIN_PATH}
+        public_path: ${PUBLIC_PATH}
+        api_path: ${API_PATH}
+    command: "npm run start"
+    working_dir: /home/node/app/backend
+    networks:
+      webdb:
+        ipv4_address: 172.16.10.2
     environment:
-      - TZ=America/Sao_Paulo
-    command: bash -c "npm install && npm start"
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      PASSWORD: ${PASSWORD}
+      ADMIN_PATH: ${ADMIN_PATH}
+      PUBLIC_PATH: ${PUBLIC_PATH}
+      API_PATH: ${API_PATH}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      TZ: America/Sao_Paulo
+    expose:
+      - "${PORT}"
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    restart: always
+  db:
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/db.Dockerfile
+    expose:
+      - "${DB_PORT}"
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PORT: ${DB_PORT}
+    networks:
+      webdb:
+        ipv4_address: ${DB_HOST}
+    volumes:
+      - ./backend/data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
+        interval: 10s
+        timeout: 10s
+        retries: 10
+
+networks:
+  webdb:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.10.0/24
