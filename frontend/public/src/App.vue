@@ -15,22 +15,40 @@
         preparedFood: number;
     }
 
+    interface searchParamsInterface {
+        startDate?: string;
+        endDate?: string;
+    }
+
     var startDateString: string = ''
     var endDateString: string = ''
     var allResidues: Residue[] = []
     const filteredResidues = ref(allResidues);
 
-    onMounted(() => {
-        fetch(`${import.meta.env.VITE_API_BASE_PATH}/residues`)
+    const getResidues = () => {
+        const searchParams: searchParamsInterface = {}
+        if (startDateString !== '') {
+            searchParams['startDate'] = startDateString
+        }
+        if (endDateString !== '') {
+            searchParams['endDate'] = endDateString
+        }
+        
+        fetch(`${import.meta.env.VITE_API_BASE_PATH}/residues?` + new URLSearchParams(searchParams as any))
         .then(response => response.json())
         .then(data => {
+            if (data.message) {
+                alert(data.message)
+                return
+            }
             allResidues = data;
             filteredResidues.value = data;
         })
         .catch(error => {
+            alert('Erro ao buscar dados')
             console.error('Error fetching data:', error);
         });
-    });
+    }
 
     const filterResidues = () => {
         const startDate = isISOString(startDateString) ? ISOStringToDate(startDateString) : null
@@ -142,17 +160,14 @@
         <h2>Filtros</h2>
         <div class="mb-3">
             <label for="date" class="form-label">Data inicio</label>
-            <input type="date" class="form-control date-input" id="date" placeholder="Data" @input="filterResidues" v-model="startDateString" />
+            <input type="date" class="form-control date-input" id="date" placeholder="Data" v-model="startDateString" />
         </div>
         <div class="mb-3">
             <label for="date" class="form-label">Data fim</label>
-            <input type="date" class="form-control date-input" id="date" placeholder="Data" @input="filterResidues" v-model="endDateString"/>
+            <input type="date" class="form-control date-input" id="date" placeholder="Data" v-model="endDateString"/>
         </div>
-        <h2>Downloads</h2>
-        <div>
-            <button type="button" class="btn btn-primary me-3" @click="downloadResiduesJSON">JSON</button>
-            <button type="button" class="btn btn-primary me-3" @click="downloadResiduesCSV">CSV</button>
-            <button type="button" class="btn btn-primary" @click="downloadResiduesXLSX">XLSX</button>
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary" @click="getResidues">Buscar</button>
         </div>
         <h2>Dados</h2>
         <table class="table table-hover">
@@ -179,6 +194,15 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div v-if="filteredResidues.length > 0">
+        <h2>Downloads</h2>
+        <div>
+            <button type="button" class="btn btn-primary me-3" @click="downloadResiduesJSON">JSON</button>
+            <button type="button" class="btn btn-primary me-3" @click="downloadResiduesCSV">CSV</button>
+            <button type="button" class="btn btn-primary" @click="downloadResiduesXLSX">XLSX</button>
+        </div>
     </div>
 </template>
 
