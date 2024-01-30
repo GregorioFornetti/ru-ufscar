@@ -6,7 +6,9 @@ A API está publica atualmente em: http://62.72.11.172:3000/
 
 ## Documentação da API
 
-A documentação pode ser acessada no [Postman](https://documenter.getpostman.com/view/20890406/2s9YypDN42). Logo abaixo também há uma versão dessa documentação em Markdown:
+A documentação com exemplos pode ser acessada no [Postman](https://documenter.getpostman.com/view/20890406/2s9YypDN42). 
+
+Logo abaixo também há uma versão dessa documentação em Markdown (está possui o schema das respostas):
 
 
 
@@ -69,144 +71,6 @@ Retorna um JSON no seguinte formato:
 }
 ```
 
-Exemplo de resposta:
-
-```javascript
-{
-   "last_update":{
-      "date":"09/01/2024",
-      "time":"16:20"
-   },
-   "info_from":"https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
-   "info_type":"automatic",
-   "menus_inteval":{
-      "start_date":"07/01",
-      "end_date":"13/01"
-   },
-   "menus":[
-      {
-         "weekday_name":"domingo",
-         "weekday_abbreviation":"dom",
-         "date":"07/01",
-         "lunch":null,
-         "dinner":null
-      },
-      {
-         "weekday_name":"segunda-feira",
-         "weekday_abbreviation":"seg",
-         "date":"08/01",
-         "lunch":{
-            "main_dish_unrestricted":"Iscas de frango à chinesa e ovo frito à parmegiana",
-            "main_dish_vegetarian":"Bolinho de feijão preto e ovo frito à parmegiana",
-            "garnishes":"Repolho refogado",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         },
-         "dinner":{
-            "main_dish_unrestricted":"Strogonoff de frango e ovo frito à brasileira",
-            "main_dish_vegetarian":"Strogonoff de pts e ovo frito à brasileira",
-            "garnishes":"Batata palha",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         }
-      },
-      {
-         "weekday_name":"terça-feira",
-         "weekday_abbreviation":"ter",
-         "date":"09/01",
-         "lunch":{
-            "main_dish_unrestricted":"Carne louca e cubos de frango com legumes",
-            "main_dish_vegetarian":"Berinjela recheada com pts e mix de grãos com legumes",
-            "garnishes":"Polenta",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         },
-         "dinner":{
-            "main_dish_unrestricted":"Iscas bovinas e frango desfiado",
-            "main_dish_vegetarian":"Almondega de ervilha e charuto de repolho com pts",
-            "garnishes":"Polenta",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         }
-      },
-      {
-         "weekday_name":"quarta-feira",
-         "weekday_abbreviation":"qua",
-         "date":"10/01",
-         "lunch":{
-            "main_dish_unrestricted":"Pernil suíno desfiado e carne assada",
-            "main_dish_vegetarian":"Feijão branco ao vinagrete e nuggets de grão de bico",
-            "garnishes":"Farofa",
-            "accompaniment":"Arroz branco e integral / feijão preto",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         },
-         "dinner":{
-            "main_dish_unrestricted":"Copa lombo ao molho limão e filé de frango grelhado",
-            "main_dish_vegetarian":"Batata recheada com pts e grão de bico xadrez",
-            "garnishes":"Farofa",
-            "accompaniment":"Arroz branco e integral / feijão preto",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         }
-      },
-      {
-         "weekday_name":"quinta-feira",
-         "weekday_abbreviation":"qui",
-         "date":"11/01",
-         "lunch":{
-            "main_dish_unrestricted":"Carne moída e frango assado",
-            "main_dish_vegetarian":"Assado de grão de bico com batatas e bolinho de mandioca com pts",
-            "garnishes":"Macarrão alho e óleo",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         },
-         "dinner":{
-            "main_dish_unrestricted":"Quibe de forno e frango ao sugo",
-            "main_dish_vegetarian":"Quibe veg e soja á primavera",
-            "garnishes":"Macarrão alho e óleo",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         }
-      },
-      {
-         "weekday_name":"sexta-feira",
-         "weekday_abbreviation":"sex",
-         "date":"12/01",
-         "lunch":{
-            "main_dish_unrestricted":"Filé de frango grelhado e torta madalena de carne",
-            "main_dish_vegetarian":"Bolinho de tofu e torta madalena veg",
-            "garnishes":"Seleta de legumes",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada",
-            "dessert":"Fruta ou doce"
-         },
-         "dinner":{
-            "main_dish_unrestricted":"Canjiquinha e iscas de frango ao molho vinagrete",
-            "main_dish_vegetarian":"Canjiquinha veg e feijão branco com brócolis",
-            "garnishes":"Seleta de legumes",
-            "accompaniment":"Arroz branco e integral / feijão",
-            "salad":"Dois tipos de salada"
-         }
-      },
-      {
-         "weekday_name":"sábado",
-         "weekday_abbreviation":"sáb",
-         "date":"13/01",
-         "lunch":null,
-         "dinner":null
-      }
-   ]
-}
-```
-
-
 
 ### Consultar preços
 
@@ -245,46 +109,6 @@ Retorna um JSON no seguinte formato:
       number_in_full: "string"  // Preço a ser pago em extenso
     }
     // ... Para cada categoria temos um objeto igual ao exemplo mostrado acima
-  ]
-}
-```
-
-Exemplo de resposta:
-
-```javascript
-{
-  "last_update": {
-    "date": "24/01/2024",
-    "time": "12:20"
-  },
-  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
-  "info_type": "automatic",
-  "prices": [
-    {
-      "category": "discente bolsista",
-      "price": 0,
-      "number_in_full": "zero"
-    },
-    {
-      "category": "discente categoria intermediário",
-      "price": 2.5,
-      "number_in_full": "dois reais e cinquenta centavos"
-    },
-    {
-      "category": "discente regular (graduação e pós graduação)",
-      "price": 4.2,
-      "number_in_full": "quatro reais e vinte centavos"
-    },
-    {
-      "category": "servidor (técnico administrativo e docente)",
-      "price": 12.39,
-      "number_in_full": "doze reais e trinta e nove centavos"
-    },
-    {
-      "category": "visitante",
-      "price": 12.5,
-      "number_in_full": "doze reais e cinquenta centavos"
-    }
   ]
 }
 ```
@@ -381,436 +205,6 @@ Caso nenhum valor tenha sido fornecido no parâmetro `campus`, o JSON terá o se
 }
 ```
 
-E um exemplo de resposta nesse caso é:
-
-```javascript
-{
-  "last_update": {
-    "date": "24/01/2024",
-    "time": "13:20"
-  },
-  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
-  "info_type": "automatic",
-  "campi_schedules": [
-    {
-      "name": "São Carlos",
-      "query_name": "sao-carlos",
-      "weekdays_schedules": [
-        {
-          "name": "domingo",
-          "abbreviation": "dom",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:30",
-              "end_time": "13:00"
-            },
-            "dinner": {
-              "start_time": "17:30",
-              "end_time": "18:30"
-            }
-          }
-        },
-        {
-          "name": "segunda-feira",
-          "abbreviation": "seg",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "14:00"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "terça-feira",
-          "abbreviation": "ter",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "14:00"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "quarta-feira",
-          "abbreviation": "qua",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "14:00"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "quinta-feira",
-          "abbreviation": "qui",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "14:00"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "sexta-feira",
-          "abbreviation": "sex",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "14:00"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "sábado",
-          "abbreviation": "sáb",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:30",
-              "end_time": "13:00"
-            },
-            "dinner": {
-              "start_time": "17:30",
-              "end_time": "18:30"
-            }
-          }
-        }
-      ],
-      "holiday_schedule": {
-        "lunch": {
-          "start_time": "11:30",
-          "end_time": "13:00"
-        },
-        "dinner": {
-          "start_time": "17:30",
-          "end_time": "18:30"
-        }
-      },
-      "optional_workday_schedule": {
-        "lunch": {
-          "start_time": "11:30",
-          "end_time": "13:00"
-        },
-        "dinner": {
-          "start_time": "17:30",
-          "end_time": "18:30"
-        }
-      }
-    },
-    {
-      "name": "Sorocaba",
-      "query_name": "sorocaba",
-      "weekdays_schedules": [
-        {
-          "name": "domingo",
-          "abbreviation": "dom",
-          "schedule": {
-            "lunch": null,
-            "dinner": null
-          }
-        },
-        {
-          "name": "segunda-feira",
-          "abbreviation": "seg",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "terça-feira",
-          "abbreviation": "ter",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "quarta-feira",
-          "abbreviation": "qua",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "quinta-feira",
-          "abbreviation": "qui",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "sexta-feira",
-          "abbreviation": "sex",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "17:00",
-              "end_time": "19:00"
-            }
-          }
-        },
-        {
-          "name": "sábado",
-          "abbreviation": "sáb",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:00"
-            },
-            "dinner": null
-          }
-        }
-      ],
-      "holiday_schedule": {
-        "lunch": null,
-        "dinner": null
-      },
-      "optional_workday_schedule": {
-        "lunch": null,
-        "dinner": null
-      }
-    },
-    {
-      "name": "Araras",
-      "query_name": "araras",
-      "weekdays_schedules": [
-        {
-          "name": "domingo",
-          "abbreviation": "dom",
-          "schedule": {
-            "lunch": null,
-            "dinner": null
-          }
-        },
-        {
-          "name": "segunda-feira",
-          "abbreviation": "seg",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "18:00",
-              "end_time": "19:30"
-            }
-          }
-        },
-        {
-          "name": "terça-feira",
-          "abbreviation": "ter",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "18:00",
-              "end_time": "19:30"
-            }
-          }
-        },
-        {
-          "name": "quarta-feira",
-          "abbreviation": "qua",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "18:00",
-              "end_time": "19:30"
-            }
-          }
-        },
-        {
-          "name": "quinta-feira",
-          "abbreviation": "qui",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "18:00",
-              "end_time": "19:30"
-            }
-          }
-        },
-        {
-          "name": "sexta-feira",
-          "abbreviation": "sex",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "13:30"
-            },
-            "dinner": {
-              "start_time": "18:00",
-              "end_time": "19:30"
-            }
-          }
-        },
-        {
-          "name": "sábado",
-          "abbreviation": "sáb",
-          "schedule": {
-            "lunch": {
-              "start_time": "11:00",
-              "end_time": "12:30"
-            },
-            "dinner": null
-          }
-        }
-      ],
-      "holiday_schedule": {
-        "lunch": null,
-        "dinner": null
-      },
-      "optional_workday_schedule": {
-        "lunch": null,
-        "dinner": null
-      }
-    },
-    {
-      "name": "Lagoa do Sino",
-      "query_name": "lagoa-do-sino",
-      "weekdays_schedules": [
-        {
-          "name": "domingo",
-          "abbreviation": "dom",
-          "schedule": {
-            "lunch": null,
-            "dinner": null
-          }
-        },
-        {
-          "name": "segunda-feira",
-          "abbreviation": "seg",
-          "schedule": {
-            "lunch": {
-              "start_time": "10:30",
-              "end_time": "13:30"
-            },
-            "dinner": null
-          }
-        },
-        {
-          "name": "terça-feira",
-          "abbreviation": "ter",
-          "schedule": {
-            "lunch": {
-              "start_time": "10:30",
-              "end_time": "13:30"
-            },
-            "dinner": null
-          }
-        },
-        {
-          "name": "quarta-feira",
-          "abbreviation": "qua",
-          "schedule": {
-            "lunch": {
-              "start_time": "10:30",
-              "end_time": "13:30"
-            },
-            "dinner": null
-          }
-        },
-        {
-          "name": "quinta-feira",
-          "abbreviation": "qui",
-          "schedule": {
-            "lunch": {
-              "start_time": "10:30",
-              "end_time": "13:30"
-            },
-            "dinner": null
-          }
-        },
-        {
-          "name": "sexta-feira",
-          "abbreviation": "sex",
-          "schedule": {
-            "lunch": {
-              "start_time": "10:30",
-              "end_time": "13:30"
-            },
-            "dinner": null
-          }
-        },
-        {
-          "name": "sábado",
-          "abbreviation": "sáb",
-          "schedule": {
-            "lunch": null,
-            "dinner": null
-          }
-        }
-      ],
-      "holiday_schedule": {
-        "lunch": null,
-        "dinner": null
-      },
-      "optional_workday_schedule": {
-        "lunch": null,
-        "dinner": null
-      }
-    }
-  ]
-}
-```
-
 Caso seja fornecido um valor do parâmetro `campus`, ele terá o seguinte formato:
 
 
@@ -866,118 +260,100 @@ Caso seja fornecido um valor do parâmetro `campus`, ele terá o seguinte format
 }
 ```
 
-E um exemplo de resposta nesse caso, usando `campus=sorocaba`, temos:
+### Consultar informações de descarte RU UFSCar Sorocaba
+
+#### Endpoint
+
+```
+/residues
+OU
+/residues?startDate=<YYYY-MM-DD>&endDate=<YYYY-MM-DD>
+```
+
+#### Método
+
+```
+GET
+```
+
+#### Descrição
+
+Consulta os dados a respeito dos descartes no campus de Sorocaba.
+
+Pode ser especificado um intervalo o qual serão retornados os registros da consulta. Estes podem ser informados a partir do parâmetros de busca `startDate` e `endDate`.
+
+Estes parâmetros precisam seguir o formato `YYYY-MM-DD` (ex - 2024-01-30 = 30 de janeiro de 2024).
+
+Caso não encontre nenhum registro ou um itervalo inválido seja fornecido (`startDate` > `endDate`) um JSON com uma mensagem de erro será retornado.
+
+
+#### Resposta
+
+Caso sejam encontrados registros, a resposta será um JSON seguindo o formato abaixo:
+
+```javascript
+[
+  {
+    id: "integer",  // Identificador único de um registro
+    type: "string",  // Tipo da alimentação, podendo ser um valor entre "almoço" e "jantar"
+    date: "string",  // Data em que o registro faz referência, no formato DD/MM/YYYY
+    preparationResidues: "float",  // Quantidade descartada a partir da preparação do alimento, em kgs
+    plateRemainsResidues: "float",  // Quantidade descartada a partir do resto nos pratos, em kgs
+    counterRemainsResidues: "float",  // Quantidade descartada a partir da cuba, em kgs
+    preparedFood: "float"  // Quantidade de comida preparada, em kgs
+  }
+  ... // Todos os registros retornados seguirão o formato definido acima
+]
+```
+
+Caso seja fornecido um intervalo inválido (status `400`) de datas ou não forem encontrados nenhum registro (status `404`):
 
 ```javascript
 {
-  "last_update": {
-    "date": "24/01/2024",
-    "time": "18:21"
-  },
-  "info_from": "https://www.proad.ufscar.br/pt-br/servicos/restaurante-universitario",
-  "info_type": "automatic",
-  "campus_schedules": {
-    "name": "Sorocaba",
-    "query_name": "sorocaba",
-    "weekdays_schedules": [
-      {
-        "name": "domingo",
-        "abbreviation": "dom",
-        "schedule": {
-          "lunch": null,
-          "dinner": null
-        }
-      },
-      {
-        "name": "segunda-feira",
-        "abbreviation": "seg",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:30"
-          },
-          "dinner": {
-            "start_time": "17:00",
-            "end_time": "19:00"
-          }
-        }
-      },
-      {
-        "name": "terça-feira",
-        "abbreviation": "ter",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:30"
-          },
-          "dinner": {
-            "start_time": "17:00",
-            "end_time": "19:00"
-          }
-        }
-      },
-      {
-        "name": "quarta-feira",
-        "abbreviation": "qua",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:30"
-          },
-          "dinner": {
-            "start_time": "17:00",
-            "end_time": "19:00"
-          }
-        }
-      },
-      {
-        "name": "quinta-feira",
-        "abbreviation": "qui",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:30"
-          },
-          "dinner": {
-            "start_time": "17:00",
-            "end_time": "19:00"
-          }
-        }
-      },
-      {
-        "name": "sexta-feira",
-        "abbreviation": "sex",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:30"
-          },
-          "dinner": {
-            "start_time": "17:00",
-            "end_time": "19:00"
-          }
-        }
-      },
-      {
-        "name": "sábado",
-        "abbreviation": "sáb",
-        "schedule": {
-          "lunch": {
-            "start_time": "11:00",
-            "end_time": "13:00"
-          },
-          "dinner": null
-        }
-      }
-    ],
-    "holiday_schedule": {
-      "lunch": null,
-      "dinner": null
-    },
-    "optional_workday_schedule": {
-      "lunch": null,
-      "dinner": null
-    }
-  }
+  message: "string"  // Mensagem de erro
+}
+```
+
+### Consultar informações um registro especifico de descarte RU UFSCar Sorocaba
+
+#### Endpoint
+
+```
+/residues/:id
+```
+
+#### Método
+
+```
+GET
+```
+
+#### Descrição
+
+Consulta um registro especifico sobre descarte do campus de Sorocaba.
+
+Utiliza uma váriavel de caminho para determinar o `id` do registro que será retornado na consulta. Caso seja fornecido um id inexistente ou inválido, um JSON com mensagem de erro será retornado (status `404`).
+
+#### Resposta
+
+Caso seja encontrado um registro, a resposta será um JSON seguindo o formato abaixo:
+
+```javascript
+{
+  id: "integer",  // Identificador único de um registro
+  type: "string",  // Tipo da alimentação, podendo ser um valor entre "almoço" e "jantar"
+  date: "string",  // Data em que o registro faz referência, no formato DD/MM/YYYY
+  preparationResidues: "float",  // Quantidade descartada a partir da preparação do alimento, em kgs
+  plateRemainsResidues: "float",  // Quantidade descartada a partir do resto nos pratos, em kgs
+  counterRemainsResidues: "float",  // Quantidade descartada a partir da cuba, em kgs
+  preparedFood: "float"  // Quantidade de comida preparada, em kgs
+}
+```
+
+Se não for encontrado nenhum registro:
+
+```javascript
+{
+  message: "string"  // Mensagem de erro
 }
 ```
