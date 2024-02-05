@@ -38,6 +38,10 @@ dos descartes do RU da UFSCar de Sorocaba. Está API está [documentada na READM
 Um aplicativo para dispositivos móveis foi implementado. Neste são mostrados algumas informações relevantes, como o cardápio do RU atualizado, preços da refeição dependendo da categoria e horários de funcionamento. Neste app também há uma aba direcionando para outras
 páginmas, como o próximo componente que será descrito. Um dos objetivos do app é divulgar iniciativas e informações do restaurante universitário.
 
+O app pode ser baixado atualmente pelo [Expo](https://expo.dev//accounts/manita_moura/projects/RuVerde/builds/7f843309-5b79-4d65-a9f6-b58f46aa67b9)
+
+Um vídeo mostrando este componente funcionando está disponível no [YouTube](https://youtu.be/s0qnAPAFMc4)
+
 ### Frontend - Aplicação web
 
 Uma aplicação web foi desenvolvida para cadastro e edição de informações a respeito dos descartes do restaurante universitário. Há uma página para administradores (que seriam funcionários do próprio RU) e uma página de consultas, aberta ao público, para transparência
@@ -47,7 +51,7 @@ e para possíveis coletas de dados para relatórios e tomadas de decisão.
 
 - A página de administrador pode ser acessada em: http://62.72.11.172:3000/web/admin/
 
-Um vídeo mostrando este componente fncionando está disponível no [YouTube](https://www.youtube.com/watch?v=QMkddbeLSxE).
+Um vídeo mostrando este componente funcionando está disponível no [YouTube](https://www.youtube.com/watch?v=QMkddbeLSxE).
 
 ## Instalação e execução
 
